@@ -4,7 +4,9 @@
   "description": "A json to json transformation utility with a few nice features to use when translating for example API responses into a domain object for use in your domain-driven JavaScript applications. Can be used in React applications with the 'useMapper' hook.",
   "main": "json-mapper.js",
   "scripts": {
-    "test": "mocha json-mapper.tests.js"
+    "test": "mocha json-mapper.tests.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "repository": {
     "type": "git",
@@ -41,6 +43,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.0"
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.0",
+    "prettier": "^1.19.1"
   }
 }
