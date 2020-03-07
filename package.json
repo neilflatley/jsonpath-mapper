@@ -1,0 +1,46 @@
+{
+  "name": "jsonpath-mapper",
+  "version": "1.0.0-beta.0",
+  "description": "A json to json transformation utility with a few nice features to use when translating for example API responses into a domain object for use in your domain-driven JavaScript applications. Can be used in React applications with the 'useMapper' hook.",
+  "main": "json-mapper.js",
+  "scripts": {
+    "test": "mocha json-mapper.tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neilflatley/jsonpath-mapper.git"
+  },
+  "keywords": [
+    "jsonpath",
+    "jpath",
+    "json mapper",
+    "json transformation",
+    "json transformer",
+    "json to json",
+    "json2json",
+    "object mapping",
+    "prop mapping",
+    "json",
+    "mapper",
+    "mapping",
+    "format",
+    "formatting",
+    "mapping",
+    "hook",
+    "usemapper",
+    "use mapper"
+  ],
+  "author": "Neil Flatley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neilflatley/jsonpath-mapper/issues"
+  },
+  "homepage": "https://github.com/neilflatley/jsonpath-mapper#readme",
+  "dependencies": {
+    "jsonpath": "^1.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.0"
+  }
+}
