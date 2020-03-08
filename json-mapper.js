@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import jp from 'jsonpath';
+import jp from "jsonpath";
 
 export const jpath = (query, json) => {
-  const result = jp.query(json, `$.${query}`);
+  const result = jp.query(json, `$${query.startsWith(".") ? "" : "."}${query}`);
   if (
     result.length > 1 ||
     (query.match(/\[.*?\]/) && !query.match(/\[[0-9]\]/))
@@ -12,14 +12,16 @@ export const jpath = (query, json) => {
 };
 
 const tryMultiple = (json, arr) => {
-  const result = findMultiple(json, arr).filter(r => r);
+  const result = findMultiple(json, arr).filter(
+    r => typeof r === "number" || r
+  );
   return result.length > 0 && result[0];
 };
 
 const findMultiple = (json, arr) => {
   const results = arr.map(inner => {
     // evaluate any value supplied as string
-    if (typeof inner === 'string') {
+    if (typeof inner === "string") {
       return jpath(inner, json);
     }
     // if typeof func
@@ -40,11 +42,11 @@ const mapObject = (json, obj) => {
       // if typeof Object,
       // if we've defined '$path' and $formatting or $default
       // if not we will treat as plain object and call self recursively
-      if (typeof v === 'object') {
+      if (typeof v === "object") {
         // do we have $path or $formatting?
-        let val, formatted;
+        let val, formatted, finalVal;
         if (v.$path) {
-          if (typeof v.$path === 'string') {
+          if (typeof v.$path === "string") {
             val = jpath(v.$path, json);
           }
           if (Array.isArray(v.$path)) {
@@ -53,26 +55,31 @@ const mapObject = (json, obj) => {
           if (v.$formatting) {
             if (Array.isArray(val || json)) {
               formatted = (val || json).map(inner => v.$formatting(inner));
+            } else {
+              formatted = v.$formatting(val || json);
             }
-            return [k, formatted || v.$formatting(val || json)];
+            return [k, formatted];
           } else {
             if (v.$default && !val) {
-              if (typeof v.$default === 'function') {
+              if (typeof v.$default === "function") {
                 return [k, v.$default(json)];
               }
               return [k, v.$default];
             }
-            return [k, val];
           }
+          if (v.$return) {
+            finalVal = v.$return(formatted || val);
+          }
+          return [k, finalVal];
         }
         //otherwise treat as nested object
         return [k, mapObject(json, v)];
       }
 
-      if (typeof v === 'string') {
+      if (typeof v === "string") {
         return [k, jpath(v, json)];
       }
-      if (typeof v === 'function') {
+      if (typeof v === "function") {
         return [k, v(json)];
       }
       return [k, v];
@@ -86,7 +93,7 @@ const mapArray = (json, arr) => {
 
 const mapJson = (json, template) => {
   // console.log(template);
-  if (typeof template === 'function') {
+  if (typeof template === "function") {
     return template(json);
   }
   if (Array.isArray(template)) {

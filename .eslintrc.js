@@ -2,6 +2,8 @@ module.exports = {
   plugins: ["prettier"],
   env: {
     browser: true,
+    node: true,
+    mocha: true,
     es6: true
   },
   extends: [
