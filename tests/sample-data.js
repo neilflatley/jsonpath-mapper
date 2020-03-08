@@ -91,3 +91,12 @@ export const queryParamsToCourseApi = {
     { expressionType: 'contentType', value: [] },
   ],
 };
+
+export const getQuery = {
+  fields: 'sys,title,description,thumbnail',
+  orderBy: '[{"desc":"sys.version.published"},{"desc":"sys.version.modified"}]',
+  pageIndex: '0',
+  pageSize: '12',
+  where:
+    '[{"field":"sys.versionStatus","equalTo":"latest"},{"or":[{"and":[{"field":"sys.metadata.includeInSearch","exists":true},{"field":"sys.metadata.includeInSearch","equalTo":true}]},{"field":"sys.metadata.includeInSearch","exists":false}]},{"and":[{"field":"sys.dataFormat","equalTo":"webpage"},{"not":[{"field":"sys.contentTypeId","equalTo":"newCoursesWebpage"}]}]}]',
+};

@@ -5,6 +5,7 @@ const {
   store,
   nullSearchPayload,
   queryParamsToCourseApi,
+  getQuery,
 } = require('./sample-data');
 const m = require('./mappers');
 const a = require('./acceptance');
@@ -114,4 +115,5 @@ describe('Multiple paths with $path and $return hooks', () => {
     'Converting query params to an api request',
     'disableEmptyParams'
   );
+  doTest(getQuery, 'Convert a GET query into a POST body', 'postBody');
 });

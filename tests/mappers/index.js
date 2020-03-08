@@ -84,6 +84,32 @@ export const nullSearchPayload = {
   preload: 'preload',
 };
 
+export const postBody = {
+  pageIndex: {
+    $path: 'pageIndex',
+    $default: '0',
+  },
+  pageSize: {
+    $path: 'pageSize',
+    $default: '25',
+  },
+  fields: {
+    $path: 'fields',
+    $formatting: fields => fields.split(','),
+    $disable: o => !o,
+  },
+  orderBy: {
+    $path: 'orderBy',
+    $formatting: orderBy => JSON.parse(orderBy),
+    $disable: o => !o,
+  },
+  where: {
+    $path: 'where',
+    $formatting: where => JSON.parse(where),
+    $disable: w => !w,
+  },
+};
+
 export const jsonPathTests = {
   allBooksAuthors,
   allBooksAuthorNames,

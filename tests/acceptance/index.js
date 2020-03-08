@@ -52,6 +52,38 @@ export const nullSearchPayload = {
   preload: true,
 };
 
+export const postBody = {
+  pageIndex: '0',
+  pageSize: '12',
+  fields: ['sys', 'title', 'description', 'thumbnail'],
+  orderBy: [
+    { desc: 'sys.version.published' },
+    { desc: 'sys.version.modified' },
+  ],
+  where: [
+    { field: 'sys.versionStatus', equalTo: 'latest' },
+    {
+      or: [
+        {
+          and: [
+            { field: 'sys.metadata.includeInSearch', exists: true },
+            { field: 'sys.metadata.includeInSearch', equalTo: true },
+          ],
+        },
+        { field: 'sys.metadata.includeInSearch', exists: false },
+      ],
+    },
+    {
+      and: [
+        { field: 'sys.dataFormat', equalTo: 'webpage' },
+        {
+          not: [{ field: 'sys.contentTypeId', equalTo: 'newCoursesWebpage' }],
+        },
+      ],
+    },
+  ],
+};
+
 export const jsonPathTests = {
   allBooksAuthors,
   allBooksAuthorNames,
