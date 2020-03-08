@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import jp from 'jsonpath';
+import fromEntries from 'fromentries';
 
 export const jpath = (query, json) => {
   const result = jp.query(json, `$${query.startsWith('.') ? '' : '.'}${query}`);
@@ -35,7 +36,7 @@ const findMultiple = (json, arr) => {
 };
 
 const mapObject = (json, obj) => {
-  return Object.fromEntries(
+  return fromEntries(
     Object.entries(obj)
       .map(([k, v]) => {
         if (!v) return [k, v];
