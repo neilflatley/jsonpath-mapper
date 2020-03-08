@@ -2,10 +2,12 @@
   "name": "jsonpath-mapper",
   "version": "1.0.0-beta.0",
   "description": "A json to json transformation utility with a few nice features to use when translating for example API responses into a domain object for use in your domain-driven JavaScript applications. Can be used in React applications with the 'useMapper' hook.",
-  "main": "json-mapper.js",
+  "main": "lib/jsonpath-mapper.js",
   "docs": "https://github.com/dchester/jsonpath/blob/master/README.md",
   "scripts": {
-    "test": "mocha --require @babel/register json-mapper.tests.js",
+    "postinstall": "patch-package",
+    "build": "rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js",
+    "test": "mocha --require @babel/register tests/json-mapper.tests.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
@@ -47,9 +49,20 @@
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "@babel/register": "^7.8.6",
+    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "mocha": "^7.1.0",
-    "prettier": "^1.19.1"
+    "patch-package": "^6.2.1",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2",
+    "webpack-visualizer-plugin": "^0.1.11"
   }
 }
