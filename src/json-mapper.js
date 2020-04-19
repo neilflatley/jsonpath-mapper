@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import jp from 'jsonpath';
+import jp from 'simple-jsonpath';
 import fromEntries from 'fromentries';
 
 export const jpath = (query, json) => {

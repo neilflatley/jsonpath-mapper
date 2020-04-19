@@ -43,7 +43,8 @@
   "homepage": "https://github.com/neilflatley/jsonpath-mapper#readme",
   "dependencies": {
     "fromentries": "^1.2.0",
-    "jsonpath": "^1.0.2"
+    "jsonpath": "^1.0.2",
+    "simple-jsonpath": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
