@@ -35,6 +35,9 @@ const findMultiple = (json, arr) => {
   return results;
 };
 
+const formatResult = (value, $formatting) =>
+  isObject($formatting) ? mapObject(value, $formatting) : $formatting(value);
+
 const mapObject = (json, obj) => {
   return fromEntries(
     Object.entries(obj)
@@ -60,14 +63,16 @@ const mapObject = (json, obj) => {
             }
             if (v.$formatting && (isNumber(val) || val)) {
               if (isArray(val)) {
-                formatted = val.map(inner => v.$formatting(inner));
+                formatted = val.map(inner =>
+                  formatResult(inner, v.$formatting)
+                );
               } else {
-                formatted = v.$formatting(val);
+                formatted = formatResult(val, v.$formatting);
               }
               val = formatted;
             }
             if (v.$return) {
-              finalVal = v.$return(val);
+              finalVal = formatResult(val, v.$return);
             } else {
               finalVal = val;
             }
