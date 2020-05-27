@@ -35,10 +35,12 @@ const findMultiple = (json, arr) => {
   return results;
 };
 
-const formatResult = (value, $formatting) =>
-  isObject($formatting) ? mapObject(value, $formatting) : $formatting(value);
+const formatResult = (value, $formatting, $root) =>
+  isObject($formatting)
+    ? mapObject(value, $formatting, $root)
+    : $formatting(value, $root);
 
-const mapObject = (json, obj) => {
+const mapObject = (json, obj, $root) => {
   return fromEntries(
     Object.entries(obj)
       .map(([k, v]) => {
@@ -64,32 +66,36 @@ const mapObject = (json, obj) => {
             if (v.$formatting && (isNumber(val) || val)) {
               if (isArray(val)) {
                 formatted = val.map(inner =>
-                  formatResult(inner, v.$formatting)
+                  formatResult(inner, v.$formatting, $root)
                 );
               } else {
-                formatted = formatResult(val, v.$formatting);
+                formatted = formatResult(val, v.$formatting, $root);
               }
               val = formatted;
             }
             if (v.$return) {
-              finalVal = formatResult(val, v.$return);
+              finalVal = formatResult(val, v.$return, $root);
             } else {
               finalVal = val;
             }
             if ((v.$default || isNumber(v.$default)) && !finalVal) {
               if (isFunc(v.$default)) {
-                finalVal = v.$default(json);
+                finalVal = v.$default(json, $root);
               } else {
                 finalVal = v.$default;
               }
             }
-            if (v.$disable && isFunc(v.$disable) && v.$disable(finalVal)) {
+            if (
+              v.$disable &&
+              isFunc(v.$disable) &&
+              v.$disable(finalVal, $root)
+            ) {
               return [k, null];
             }
             return [k, finalVal];
           }
           //otherwise treat as nested object
-          return [k, mapObject(json, v)];
+          return [k, mapObject(json, v, $root)];
         }
 
         if (isString(v)) {
@@ -104,21 +110,22 @@ const mapObject = (json, obj) => {
   );
 };
 
-const mapArray = (json, arr) => {
-  return arr.map(v => mapObject(json, v));
+const mapArray = (json, arr, $root) => {
+  return arr.map(v => mapObject(json, v, $root));
 };
 
 const mapJson = (json, template) => {
+  const $root = json;
   // console.log(template);
   if (typeof template === 'function') {
     return template(json);
   }
   if (Array.isArray(template)) {
     // console.log(mapArray(json, template));
-    return mapArray(json, template);
+    return mapArray(json, template, $root);
   }
   // console.log(mapObject(json, template));
-  return mapObject(json, template);
+  return mapObject(json, template, $root);
 };
 
 export const useMapper = (json, template) => {
