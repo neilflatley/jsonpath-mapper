@@ -1,39 +1,15 @@
 /* eslint-disable no-console */
-import jp from 'simple-jsonpath';
 import fromEntries from 'fromentries';
-
-export const jpath = (query, json) => {
-  const result = jp.query(json, `$${query.startsWith('.') ? '' : '.'}${query}`);
-  if (
-    result.length > 1 ||
-    (query.match(/\[.*?\]/) && !query.match(/\[[0-9]\]/))
-  )
-    return result;
-  return result[0];
-};
-
-const isArray = val => Array.isArray(val);
-const isFunc = val => typeof val === 'function';
-const isNumber = val => typeof val === 'number';
-const isObject = val => typeof val === 'object';
-const isString = val => typeof val === 'string';
-
-const tryMultiple = (json, arr) => {
-  const result = findMultiple(json, arr).filter(r => isNumber(r) || r);
-  return result.length > 0 && result[0];
-};
-
-const findMultiple = (json, arr) => {
-  const results = arr.map(inner => {
-    // evaluate any value supplied as string
-    if (isString(inner)) {
-      return jpath(inner, json);
-    }
-    // if typeof func
-    return inner(json);
-  });
-  return results;
-};
+import {
+  isArray,
+  isFunc,
+  isNullOrUndefined,
+  isNumber,
+  isObject,
+  isString,
+  jpath,
+  tryMultiple,
+} from './util';
 
 const formatResult = (value, $formatting, $root) =>
   isObject($formatting)
@@ -42,28 +18,46 @@ const formatResult = (value, $formatting, $root) =>
 
 const mapObject = (json, obj, $root) => {
   return fromEntries(
+    // For each key value entry in the object, evaluate each entry
+    // and make the mapping from the provided json according to the
+    // supplied object template that follows a few simple principles
     Object.entries(obj)
       .map(([k, v]) => {
         if (!v) return [k, v];
-        // if typeof Array evaluate all the options
+
+        // evaluate a given string as a jsonpath expression
+        if (isString(v)) {
+          return [k, jpath(v, json)];
+        }
+
+        // execute a given function
+        if (isFunc(v)) {
+          return [k, v(json)];
+        }
+
+        // evaluate all the array strings as jsonpath
         // and then return the first match
         if (isArray(v)) {
           return [k, tryMultiple(json, v)];
         }
-        // if typeof Object,
-        // if we've defined '$path' and $formatting or $default
+
+        // if typeof Object, this could be a template object
+        // look for reserved key $path and it can be combined with
+        // any of $formatting, $return, $default, $disable
         // if not we will treat as plain object and call self recursively
         if (isObject(v)) {
-          // do we have $path or $formatting?
+          // store results from various stages of the evaluations
+          // eventually reducing this to a finalVal
           let val, formatted, finalVal;
           if (v.$path) {
+            // evaluate a given string as a jsonpath expression
             if (isString(v.$path)) {
               val = jpath(v.$path, json);
             }
             if (isArray(v.$path)) {
               val = tryMultiple(json, v.$path);
             }
-            if (v.$formatting && (isNumber(val) || val)) {
+            if (v.$formatting && !isNullOrUndefined(val)) {
               if (isArray(val)) {
                 formatted = val.map(inner =>
                   formatResult(inner, v.$formatting, $root)
@@ -78,7 +72,10 @@ const mapObject = (json, obj, $root) => {
             } else {
               finalVal = val;
             }
-            if ((v.$default || isNumber(v.$default)) && !finalVal) {
+            if (
+              (v.$default || isNumber(v.$default)) &&
+              isNullOrUndefined(finalVal)
+            ) {
               if (isFunc(v.$default)) {
                 finalVal = v.$default(json, $root);
               } else {
@@ -98,12 +95,6 @@ const mapObject = (json, obj, $root) => {
           return [k, mapObject(json, v, $root)];
         }
 
-        if (isString(v)) {
-          return [k, jpath(v, json)];
-        }
-        if (isFunc(v)) {
-          return [k, v(json)];
-        }
         return [k, v];
       })
       .filter(([, v]) => v !== null)

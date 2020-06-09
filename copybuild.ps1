@@ -17,3 +17,5 @@ Copy-Item -Path .\package.json -Destination $target
 Copy-Item -Path .\package-lock.json -Destination $target
 Copy-Item -Path .\lib\jsonpath-mapper.js -Destination ($target + "\lib")
 Copy-Item -Path .\lib\jsonpath-mapper.js.map -Destination ($target + "\lib")
+Copy-Item -Path .\lib\async.js -Destination ($target + "\lib")
+Copy-Item -Path .\lib\async.js.map -Destination ($target + "\lib")
