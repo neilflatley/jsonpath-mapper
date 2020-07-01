@@ -48,7 +48,10 @@ const mapping = {
         const isbns = ProductHelper.GetCodes(book.id);
         return isbns.join(', ') || 'n/a';
     },
+    isBook: () => 'Yes',
 }
+
+const webProduct = mapJson(book, mapping);
 ```
 
 That's great but now we can't use `jsonpath` to find the values inside our object?
@@ -57,8 +60,9 @@ That's great but now we can't use `jsonpath` to find the values inside our objec
 
 ### $return
 
-### $disable
+### $default
 
+### $disable
 
 ## useMapper / mapJson
 
