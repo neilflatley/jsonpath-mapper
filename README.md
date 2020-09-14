@@ -116,6 +116,33 @@ console.log(names);
 # })
 ```
 
+#### Providing fallback mappings
+
+We can define any `jsonpath` expression as an array of strings that will attempt to find a value from the provided paths, searching each path sequentially until a value is found at one of the locations.
+
+```
+const imageMapping = {
+  imageUri: [
+    'overviewImage.asset.sys.uri',
+    'overviewImageUri',
+    'thumbnailImage.asset.sys.uri',
+    'thumbnailImageUri',
+  ],
+};
+```
+
+We would expect this mapping to return an object with a single property - imageUri, that has a single value - a uri, if a value exists under any of the paths defined in the array:
+
+```
+const testObject = mapJson(entry, imageMapping);
+
+console.log(testObject);
+
+# Object({
+#   imageUri: "/path/to/image.png"
+# })
+```
+
 ### Wire functions
 
 Instead of using just Jsonpath to find our value, we can open a function on any property we define to 'wire' in our value using raw JavaScript.
