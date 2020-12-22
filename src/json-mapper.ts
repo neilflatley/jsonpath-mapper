@@ -15,8 +15,8 @@ import {
   FormatResult,
   MapArrayFunction,
   MapElement,
+  MapJson,
   MapObject,
-  MapperFunction,
 } from './models/MapperFunctions';
 
 export const formatResult: FormatResult = (value, $formatting, $root) =>
@@ -119,7 +119,7 @@ const mapArray: MapArrayFunction = <S, T>(
   return (arr.map(v => mapObject(json, v, $root)) as unknown) as T;
 };
 
-const mapJson: MapperFunction = (json, template) => {
+const mapJson: MapJson = (json, template) => {
   const $root = json;
   // console.log(template);
   if (typeof template === 'function') {
@@ -133,7 +133,7 @@ const mapJson: MapperFunction = (json, template) => {
   return mapObject(json, template, $root);
 };
 
-export const useMapper: MapperFunction = (json, template) => {
+export const useMapper: MapJson = (json, template) => {
   return mapJson(json, template);
 };
 

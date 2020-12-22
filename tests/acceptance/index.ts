@@ -120,6 +120,12 @@ const yy: MappingTemplate<PostBody> = {
       where.map(clause => ('field' in clause ? clause.equalTo : null))
         .length !== 0,
     $disable: a => !a,
+    egg: '',
+  },
+  ef: {
+    gh: {
+      $path: '',
+    },
   },
 };
 mapJson<PostBody, PostBody>(postBody, yy);

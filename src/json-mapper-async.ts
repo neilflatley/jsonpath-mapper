@@ -12,7 +12,12 @@ import {
 } from './util';
 
 import MappingTemplate from './models/Template';
-import { MapArrayFunction, MapElement, MapObject, MapperFunction } from './models/MapperFunctions';
+import {
+  MapArrayFunction,
+  MapElement,
+  MapJsonAsync,
+  MapObject,
+} from './models/MapperFunctions';
 
 const mapElement: MapElement = async ([k, v], json, $root) => {
   if (isNullOrUndefined(v)) return [k, v];
@@ -84,7 +89,7 @@ const mapElement: MapElement = async ([k, v], json, $root) => {
     }
     return [k, finalVal];
   }
-  
+
   // Otherwise we have ourselves a nested object
   if (typeof v === 'object') return [k, await mapObject(json, v, $root)];
 
@@ -116,7 +121,7 @@ const mapArray: MapArrayFunction = async <S, T>(
   )) as unknown) as T;
 };
 
-const mapJson: MapperFunction = async (json, template) => {
+const mapJson: MapJsonAsync = async (json, template) => {
   const $root = json;
   // console.log(template);
   if (typeof template === 'function') {
@@ -130,7 +135,7 @@ const mapJson: MapperFunction = async (json, template) => {
   return await mapObject(json, template, $root);
 };
 
-export const useMapper: MapperFunction = async (json, template) => {
+export const useMapper: MapJsonAsync = async (json, template) => {
   return await mapJson(json, template);
 };
 

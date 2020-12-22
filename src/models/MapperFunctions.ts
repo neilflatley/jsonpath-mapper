@@ -1,9 +1,18 @@
-import MappingTemplate, { MappingElement, PureJsFunction, ResultFormatter } from "./Template";
+import MappingTemplate, {
+  MappingElement,
+  PureJsFunction,
+  ResultFormatter,
+} from './Template';
 
-export type MapperFunction = <S, T>(
+export type MapJson = <S, T>(
   json: S,
   template: MappingTemplate<S> | PureJsFunction<S>
-) => T | Promise<T>;
+) => T;
+
+export type MapJsonAsync = <S, T>(
+  json: S,
+  template: MappingTemplate<S> | PureJsFunction<S>
+) => Promise<T>;
 
 export type MapArrayFunction = <S, T>(
   json: S,
