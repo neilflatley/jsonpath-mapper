@@ -1,0 +1,32 @@
+import MappingTemplate, { MappingElement, PureJsFunction, ResultFormatter } from "./Template";
+
+export type MapperFunction = <S, T>(
+  json: S,
+  template: MappingTemplate<S> | PureJsFunction<S>
+) => T | Promise<T>;
+
+export type MapArrayFunction = <S, T>(
+  json: S,
+  arr: MappingTemplate<S>[],
+  $root: S
+) => T | Promise<T>;
+
+export type FormatResult = <S>(
+  value: S,
+  $formatting: ResultFormatter<S>,
+  $root: S
+) => any | Promise<any>;
+
+export type MapObject = <S, T>(
+  json: S,
+  obj: MappingTemplate<S> | ResultFormatter<S>,
+  $root: S
+) => T | Promise<T>;
+
+type ElementKeyValue<S> = [string, MappingElement<S>];
+
+export type MapElement = <S>(
+  keyValue: ElementKeyValue<S>,
+  json: S,
+  $root: S
+) => ElementKeyValue<S> | Promise<ElementKeyValue<S>>;

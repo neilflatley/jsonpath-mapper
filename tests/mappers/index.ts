@@ -1,18 +1,21 @@
+import { PostBody } from '../acceptance/index';
 import {
   allBooksAuthors,
   allBooksAuthorNames,
   allNamesInBooks,
   allAuthorNames,
-  allBookTitlesByAuthorName,
-  allBookTitlesByPriceLessThan,
   firstBookTitle,
   lastBookTitle,
   firstTwoBookTitles,
   lastTwoBookTitles,
   twoBookTitlesFromSecondPosition,
-  booksByVariousAuthorWithPriceLessThan,
-  booksByVariousAuthor,
+  // allBookTitlesByAuthorName,
+  // allBookTitlesByPriceLessThan,
+  // booksByVariousAuthorWithPriceLessThan,
+  // booksByVariousAuthor,
 } from './jsonpath.mappers';
+
+import MappingTemplate from '../../src/models/Template';
 
 export const allPrices = {
   booksData: 'books[*].price',
@@ -84,7 +87,7 @@ export const nullSearchPayload = {
   preload: 'preload',
 };
 
-export const postBody = {
+export const postBody: MappingTemplate<PostBody> = {
   pageIndex: {
     $path: 'pageIndex',
     $default: '0',
@@ -95,17 +98,17 @@ export const postBody = {
   },
   fields: {
     $path: 'fields',
-    $formatting: fields => fields.split(','),
+    $formatting: (fields: string, root) => fields.split(','),
     $disable: o => !o,
   },
   orderBy: {
     $path: 'orderBy',
-    $formatting: orderBy => JSON.parse(orderBy),
+    $formatting: (orderBy: string) => JSON.parse(orderBy),
     $disable: o => !o,
   },
   where: {
     $path: 'where',
-    $formatting: where => JSON.parse(where),
+    $formatting: (where: string) => JSON.parse(where),
     $disable: w => !w,
   },
 };

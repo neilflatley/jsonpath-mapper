@@ -9,7 +9,5 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": false,
-  "eslint.autoFixOnSave": true,
   "prettier.printWidth": 80,
-  "prettier-eslint.eslintIntegration": true
 }

@@ -8,14 +8,11 @@ If (-not (Test-Path $target)) {
   New-Item $target -ItemType Directory
 }
 
-If (-not (Test-Path ($target + "\lib"))) {
-  New-Item ($target + "\lib") -ItemType Directory
+If (-not (Test-Path ($target + "\dist"))) {
+  New-Item ($target + "\dist") -ItemType Directory
 }
 
 npm run build
 Copy-Item -Path .\package.json -Destination $target
 Copy-Item -Path .\package-lock.json -Destination $target
-Copy-Item -Path .\lib\jsonpath-mapper.js -Destination ($target + "\lib")
-Copy-Item -Path .\lib\jsonpath-mapper.js.map -Destination ($target + "\lib")
-Copy-Item -Path .\lib\async.js -Destination ($target + "\lib")
-Copy-Item -Path .\lib\async.js.map -Destination ($target + "\lib")
+Copy-Item -Path .\dist -Filter *.* -Destination $target -Recurse -Force
