@@ -52,6 +52,9 @@ export const isMapperFunctions = <S>(
   val: MappingElement<S>
 ): val is MapperFunctions<S> => typeof val === 'object' && '$path' in val;
 
+export const isObject = <S>(val: MappingElement<S>): val is MappingElement<S> =>
+  typeof val === 'object';
+
 export const isString = <S>(val: MappingElement<S>): val is string =>
   typeof val === 'string';
 

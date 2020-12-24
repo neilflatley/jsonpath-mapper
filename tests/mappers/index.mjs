@@ -1,3 +1,4 @@
+import mapJson from '../../dist/json-mapper';
 import {
   allBooksAuthors,
   allBooksAuthorNames,
@@ -13,7 +14,6 @@ import {
   // booksByVariousAuthorWithPriceLessThan,
   // booksByVariousAuthor,
 } from './jsonpath.mappers';
-
 
 export const allPrices = {
   booksData: 'books[*].price',
@@ -108,6 +108,15 @@ export const postBody = {
     $path: 'where',
     $formatting: where => JSON.parse(where),
     $disable: w => !w,
+  },
+  additionalTest: {
+    versionStatus: {
+      $path: 'whereArr',
+      $formatting: {
+        fieldId: ['field', 'or', 'and'],
+        value: ['equalTo', 'exists'],
+      },
+    },
   },
 };
 

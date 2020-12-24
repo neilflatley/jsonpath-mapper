@@ -8,6 +8,7 @@ import {
   isUndefined,
   jpath,
   tryMultiple,
+  isObject,
 } from './util';
 
 import MappingTemplate from './models/Template';
@@ -20,10 +21,10 @@ import {
 } from './models/MapperFunctions';
 
 export const formatResult: FormatResult = (value, $formatting, $root) =>
-  isMapperFunctions($formatting)
-    ? mapObject(value, $formatting, $root)
-    : isWireFunction($formatting)
+  isWireFunction($formatting)
     ? $formatting(value, $root)
+    : isObject($formatting)
+    ? mapObject(value, $formatting, $root)
     : value;
 
 const mapElement: MapElement = ([k, v], json, $root) => {

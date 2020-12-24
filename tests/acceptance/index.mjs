@@ -82,6 +82,9 @@ export const postBody = {
       ],
     },
   ],
+  additionalTest: {
+    versionStatus: [{ fieldId: 'sys.versionStatus', value: 'latest' }],
+  },
 };
 
 export const jsonPathTests = {

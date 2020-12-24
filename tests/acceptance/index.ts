@@ -123,10 +123,18 @@ const yy: MappingTemplate<PostBody> = {
     egg: '',
   },
   ef: {
-    gh: {
-      $path: '',
-    },
+    gh: '',
+    
   },
+  ij: {
+    kl: {
+      $path: '',
+      $formatting: {
+        egg: '',
+        beans:  '',
+      }
+    }
+  }
 };
 mapJson<PostBody, PostBody>(postBody, yy);
 
