@@ -1,4 +1,3 @@
-import mapJson from '../../dist/json-mapper';
 import {
   allBooksAuthors,
   allBooksAuthorNames,
@@ -115,6 +114,91 @@ export const postBody = {
       $formatting: {
         fieldId: ['field', 'or', 'and'],
         value: ['equalTo', 'exists'],
+      },
+      $return: arr => arr.filter(f => f.fieldId === 'sys.versionStatus'),
+    },
+  },
+};
+
+export const siteConfigState = {
+  contactDetails: 'contactDetails',
+  footerLinks: {
+    $path: 'footerLinks',
+    $formatting: {
+      title: 'title',
+      links: {
+        $path: 'links',
+        $formatting: {
+          title: 'entryTitle',
+          path: 'sys.uri',
+        },
+      },
+    },
+  },
+  legalText: 'footerLegalText',
+  splitPaymentsBasketValue: 'splitPaymentsMinimumBasketValue',
+  language: 'sys.language',
+  mailingListSignUp: {
+    title: 'mailingListSignUp.title',
+    text: 'mailingListSignUp.text',
+    path: 'mailingListSignUp.path.sys.uri',
+    buttonText: 'mailingListSignUp.buttonText',
+  },
+  mainNavigation: {
+    $path: 'mainNavigation',
+    $formatting: {
+      title: 'entryTitle',
+      link: 'itemLink.sys.uri',
+      id: 'sys.id',
+      children: {
+        $path: 'children',
+        $formatting: {
+          title: 'entryTitle',
+          link: 'sys.uri',
+        },
+      },
+      offers: {
+        $path: 'offers',
+        $formatting: {
+          id: 'sys.id',
+          accentColor: {
+            $path: 'accentColor',
+            $formatting: accentColor => accentColor.toLowerCase(),
+          },
+          tag: 'offerStrapline',
+          title: 'title',
+          offer: 'subTitle',
+          image: 'specialOffer.image[0].asset.sys.uri',
+          badges: {
+            $path: 'specialOfferHighlight',
+            $formatting: {
+              label: 'offerBenefit',
+              color: 'benefitBackground',
+            },
+          },
+          description: 'specialOffer.description',
+          price: 'specialOffer.netsuiteProduct.unitPrice',
+          monthly: {
+            $path: 'specialOffer.netsuiteProduct.unitPrice',
+            $formatting: price => (parseFloat(price) / 4).toFixed(2),
+          },
+          vatRelief: '',
+          buttonText: 'ctaText',
+          productInfo: {
+            $path: 'specialOffer',
+            $formatting: {
+              name: 'entryTitle',
+              image: 'image[0].asset.sys.uri',
+              price: {
+                $path: ['price', 'netsuiteProduct.unitPrice'],
+                $formatting: price => parseFloat(price).toFixed(2),
+              },
+              link: 'sys.uri',
+              itemId: 'netsuiteProduct.itemId',
+              id: 'netsuiteProduct.sku',
+            },
+          },
+        },
       },
     },
   },

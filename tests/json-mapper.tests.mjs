@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
 import chai from 'chai';
-import mapperPkg from '../dist/json-mapper';
+import mapperPkg from '../dist/index';
 import { store, nullSearchPayload, queryParamsToCourseApi, getQuery } from './sample-data';
 import * as m from './mappers';
 import * as a from './acceptance';
-
+import { siteConfigEntry } from './sample-data.mjs';
 const { expect } = chai;
+
 const { default: mapJson } = mapperPkg;
+console.log('mapJson: ', mapJson)
 
 let count = 0;
 
@@ -114,4 +116,9 @@ describe('Multiple paths with $path and $return hooks', () => {
     'disableEmptyParams'
   );
   doTest(getQuery, 'Convert a GET query into a POST body', 'postBody');
+  doTest(
+    siteConfigEntry,
+    'Convert a SiteConfig entry into app state',
+    'siteConfigState'
+  );
 });

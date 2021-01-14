@@ -2,15 +2,16 @@
   "name": "jsonpath-mapper",
   "version": "1.0.5",
   "description": "A json to json transformation utility with a few nice features to use when translating for example API responses into a domain object for use in your domain-driven JavaScript applications. Can be used in React applications with the 'useMapper' hook.",
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "docs": "https://github.com/dchester/jsonpath/blob/master/README.md",
   "scripts": {
     "postinstall": "npx patch-package",
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && tsc && rollup -c",
     "prestart": "npm run build",
     "start": "npm run test",
-    "test": "mocha --es-module-specifier-resolution=node --require @babel/register tests/json-mapper.tests.mjs"
+    "test": "mocha --es-module-specifier-resolution=node --require @babel/register --timeout 500000 tests/json-mapper.tests.mjs"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
     "@babel/register": "^7.12.10",
     "@types/jsonpath": "^0.2.0",
     "chai": "^4.2.0",
@@ -57,6 +60,10 @@
     "patch-package": "^6.2.1",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
+    "rollup": "^2.36.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript2": "^0.29.0",
     "tslint": "^6.1.3",
     "typescript": "^4.1.3"
   }

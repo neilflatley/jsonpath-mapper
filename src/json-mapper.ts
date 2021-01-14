@@ -28,7 +28,7 @@ export const formatResult: FormatResult = (value, $formatting, $root) =>
     : value;
 
 const mapElement: MapElement = ([k, v], json, $root) => {
-  if (isNullOrUndefined(v)) return [k, v];
+  if (isNullOrUndefined(v) || v === '') return [k, undefined];
 
   // evaluate a given string as a jsonpath expression
   if (isString(v)) {
