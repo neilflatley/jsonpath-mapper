@@ -1,18 +1,4 @@
-import {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  allBookTitlesByAuthorName,
-  allBookTitlesByPriceLessThan,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  booksByVariousAuthorWithPriceLessThan,
-  booksByVariousAuthor,
-} from './jsonpath.acceptance';
+export * as jsonPathTests from './jsonpath.acceptance';
 
 export const allPrices = {
   booksData: [17.96, 10, 20, 15.67],
@@ -324,20 +310,4 @@ export const siteConfigState = {
       offers: [],
     },
   ],
-};
-
-export const jsonPathTests = {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  allBookTitlesByAuthorName,
-  allBookTitlesByPriceLessThan,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  booksByVariousAuthorWithPriceLessThan,
-  booksByVariousAuthor,
 };

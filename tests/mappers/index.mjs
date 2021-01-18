@@ -1,18 +1,4 @@
-import {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  // allBookTitlesByAuthorName,
-  // allBookTitlesByPriceLessThan,
-  // booksByVariousAuthorWithPriceLessThan,
-  // booksByVariousAuthor,
-} from './jsonpath.mappers';
+export * as jsonPathTests from './jsonpath.mappers';
 
 export const allPrices = {
   booksData: 'books[*].price',
@@ -202,20 +188,4 @@ export const siteConfigState = {
       },
     },
   },
-};
-
-export const jsonPathTests = {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  // allBookTitlesByAuthorName,
-  // allBookTitlesByPriceLessThan,
-  // booksByVariousAuthorWithPriceLessThan,
-  // booksByVariousAuthor,
 };

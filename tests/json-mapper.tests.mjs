@@ -60,18 +60,18 @@ describe('JSONPath tests', () => {
   );
   doTest(store, 'Find all names in books', 'jsonPathTests', 'allNamesInBooks');
   doTest(store, 'Find all author names', 'jsonPathTests', 'allAuthorNames');
-  // doTest(
-  //   store,
-  //   'Find all book titles by author name',
-  //   'jsonPathTests',
-  //   'allBookTitlesByAuthorName'
-  // );
-  // doTest(
-  //   store,
-  //   'Find all book titles by price less than 20',
-  //   'jsonPathTests',
-  //   'allBookTitlesByPriceLessThan'
-  // );
+  doTest(
+    store,
+    'Find all book titles by author name',
+    'jsonPathTests',
+    'allBookTitlesByAuthorName'
+  );
+  doTest(
+    store,
+    'Find all book titles by price less than 20',
+    'jsonPathTests',
+    'allBookTitlesByPriceLessThan'
+  );
   doTest(store, 'Find first book title', 'jsonPathTests', 'firstBookTitle');
   doTest(store, 'Find last book title', 'jsonPathTests', 'lastBookTitle');
   doTest(
@@ -92,18 +92,18 @@ describe('JSONPath tests', () => {
     'jsonPathTests',
     'twoBookTitlesFromSecondPosition'
   );
-  // doTest(
-  //   store,
-  //   'long subpaths: find books by various authors, for under $20',
-  //   'jsonPathTests',
-  //   'booksByVariousAuthorWithPriceLessThan'
-  // );
-  // doTest(
-  //   store,
-  //   'nested predicates: same query, however ".author.name" isn\'t repeated. For JSON with many levels, enables much more compact queries.',
-  //   'jsonPathTests',
-  //   'booksByVariousAuthor'
-  // );
+  doTest(
+    store,
+    'long subpaths: find books by various authors, for under $20',
+    'jsonPathTests',
+    'booksByVariousAuthorWithPriceLessThan'
+  );
+  doTest(
+    store,
+    'nested predicates: same query, however ".author.name" isn\'t repeated. For JSON with many levels, enables much more compact queries.',
+    'jsonPathTests',
+    'booksByVariousAuthor'
+  );
 });
 
 // Mapper feature tests
