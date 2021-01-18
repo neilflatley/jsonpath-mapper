@@ -1,4 +1,5 @@
-import jsonpath from 'simple-jsonpath';
+import { JSONPath } from 'jsonpath-plus';
+// import jsonpath from 'simple-jsonpath';
 import {
   DefaultFunction,
   DisableFunction,
@@ -11,10 +12,14 @@ import {
 export { default as fromEntries } from 'fromentries';
 
 export const jpath = <S, T>(query: string, json: S): T | T[] => {
-  const result = jsonpath.query(
-    json,
-    `$${query.startsWith('.') ? '' : '.'}${query}`
-  );
+    const result = JSONPath({
+      path: `$${query.startsWith('.') ? '' : '.'}${query}`,
+      json: json as any,
+    });
+  // const result = jsonpath.query(
+  //   json,
+  //   `$${query.startsWith('.') ? '' : '.'}${query}`
+  // );
   if (
     result.length > 1 ||
     (query.match(/\[.*?\]/) && !query.match(/\[[0-9]\]/))
