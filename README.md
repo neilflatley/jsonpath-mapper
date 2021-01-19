@@ -2,7 +2,7 @@
 
 A json to json transformation utility with a powerful templating methodology to use when translating for example API responses into a domain object for use in your reusable components in your JavaScript applications. Path resolution underpinned by a light weight implementation of `JSONPath`, the spiritual successor to `XPath`
 
-This library can be used in JavaScript applications with the `mapJson` function and in React applications with the `useMapper` hook.
+This library can be used in JavaScript and TypeScript applications with the `mapJson` function and in React applications with the `useMapper` hook.
 
 # Mappers
 
