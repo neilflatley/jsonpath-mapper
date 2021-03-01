@@ -7,6 +7,62 @@ export const allPrices = {
   software: 0,
 };
 
+export const mapArrayObject = {
+  application_context: {
+    brand_name: 'revitive.com',
+    locale: 'de-DE',
+    shipping_preference: 'SET_PROVIDED_ADDRESS',
+  },
+  purchase_units: {
+    payee: { email_address: undefined, merchant_id: undefined },
+    payer: {
+      email_address: 'neilflatley@hotmail.com',
+      name: {
+        given_name: 'Neil',
+        surname: 'Flatley',
+      },
+      address: {
+        address_line_1: 'Talstr. 123',
+        address_line_2: '',
+        admin_area_2: 'Waldfeucht',
+        admin_area_1: 'Nordrhein-Westfalen',
+        postal_code: '52525',
+        country_code: 'DE',
+      },
+    },
+    shipping: {
+      name: {
+        full_name: 'Neil Flatley',
+      },
+      address: {
+        address_line_1: 'Talstr. 123',
+        address_line_2: '',
+        admin_area_2: 'Waldfeucht',
+        admin_area_1: 'Nordrhein-Westfalen',
+        postal_code: '52525',
+        country_code: 'DE',
+      },
+    },
+    amount: {
+      value: 458.24,
+      breakdown: {
+        item_total: {
+          value: 418.48,
+          currency_code: 'EUR',
+        },
+        shipping: {
+          value: 0,
+          currency_code: 'EUR',
+        },
+        tax_total: {
+          value: 39.76,
+          currency_code: 'EUR',
+        },
+      },
+    },
+  },
+};
+
 export const disableEmptyParams = {
   fields:
     '["sys","title","entryTitle","entryYears","entryYear","year","courseImagery","primaryImage","awardLevel","courseLevel"]',

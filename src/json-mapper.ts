@@ -11,21 +11,64 @@ import {
   isObject,
 } from './util';
 
-import MappingTemplate from './models/Template';
+import MappingTemplate, { MappingElement } from './models/Template';
 import {
   FormatResult,
+  HandleMapperFunctions,
   MapArrayFunction,
   MapElement,
   MapJson,
   MapObject,
 } from './models/MapperFunctions';
 
-export const formatResult: FormatResult = (value, $formatting, $root) =>
+const formatResult: FormatResult = (value, $formatting, $root) =>
   isWireFunction($formatting)
     ? $formatting(value, $root)
     : isObject($formatting)
     ? mapObject(value, $formatting, $root)
     : value;
+
+const handleMapperFunctions: HandleMapperFunctions = ([k, v], json, $root) => {
+  // store results from various stages of the evaluations
+  // eventually reducing this to a finalVal
+  let val, formatted, finalVal: any;
+  // if (v) {
+  // evaluate a given string as a jsonpath expression
+  if (isString(v.$path)) {
+    val = jpath(v.$path, json);
+  }
+  if (isArray(v.$path)) {
+    val = tryMultiple(json, v.$path, $root, findMultiple);
+  }
+  if (!isUndefined(v.$formatting) && !isNullOrUndefined(val)) {
+    if (isArray(val)) {
+      formatted = val.map(
+        inner =>
+          !isUndefined(v.$formatting) &&
+          formatResult(inner, v.$formatting, $root)
+      );
+    } else {
+      formatted = formatResult(val, v.$formatting, $root);
+    }
+    val = formatted;
+  }
+  if (v.$return) {
+    finalVal = formatResult(val, v.$return, $root);
+  } else {
+    finalVal = val;
+  }
+  if (!isUndefined(v.$default) && isNullOrUndefined(finalVal)) {
+    if (isWireFunction(v.$default)) {
+      finalVal = v.$default(json, $root);
+    } else {
+      finalVal = v.$default;
+    }
+  }
+  if (v.$disable && isWireFunction(v.$disable) && v.$disable(finalVal, $root)) {
+    return null;
+  }
+  return finalVal;
+};
 
 const mapElement: MapElement = ([k, v], json, $root) => {
   if (isNullOrUndefined(v) || v === '') return [k, undefined];
@@ -43,7 +86,7 @@ const mapElement: MapElement = ([k, v], json, $root) => {
   // evaluate all the array strings as jsonpath
   // and then return the first match
   if (isArray(v)) {
-    return [k, tryMultiple(json, v, $root)];
+    return [k, tryMultiple(json, v, $root, findMultiple)];
   }
 
   // if typeof Object, this could be a template object
@@ -51,49 +94,7 @@ const mapElement: MapElement = ([k, v], json, $root) => {
   // any of $formatting, $return, $default, $disable
   // if not we will treat as plain object and call self recursively
   if (isMapperFunctions(v)) {
-    // store results from various stages of the evaluations
-    // eventually reducing this to a finalVal
-    let val, formatted, finalVal: any;
-    // if (v) {
-    // evaluate a given string as a jsonpath expression
-    if (isString(v.$path)) {
-      val = jpath(v.$path, json);
-    }
-    if (isArray(v.$path)) {
-      val = tryMultiple(json, v.$path, $root);
-    }
-    if (!isUndefined(v.$formatting) && !isNullOrUndefined(val)) {
-      if (isArray(val)) {
-        formatted = val.map(
-          inner =>
-            !isUndefined(v.$formatting) &&
-            formatResult(inner, v.$formatting, $root)
-        );
-      } else {
-        formatted = formatResult(val, v.$formatting, $root);
-      }
-      val = formatted;
-    }
-    if (v.$return) {
-      finalVal = formatResult(val, v.$return, $root);
-    } else {
-      finalVal = val;
-    }
-    if (!isUndefined(v.$default) && isNullOrUndefined(finalVal)) {
-      if (isWireFunction(v.$default)) {
-        finalVal = v.$default(json, $root);
-      } else {
-        finalVal = v.$default;
-      }
-    }
-    if (
-      v.$disable &&
-      isWireFunction(v.$disable) &&
-      v.$disable(finalVal, $root)
-    ) {
-      return [k, null];
-    }
-    return [k, finalVal];
+    return [k, handleMapperFunctions([k, v], json, $root)];
   }
 
   // Otherwise we have ourselves a nested object
@@ -118,6 +119,32 @@ const mapArray: MapArrayFunction = <S, T>(
   $root: S
 ) => {
   return (arr.map(v => mapObject(json, v, $root)) as unknown) as T;
+};
+
+const findMultiple = <S>(
+  json: S,
+  arr: MappingElement<S>[],
+  $root: S
+): any[] => {
+  const results = arr.map((inner, i) => {
+    // evaluate any value supplied as string
+    if (isString(inner)) return jpath(inner, json);
+
+    // if typeof func
+    if (isWireFunction(inner)) return inner(json, $root);
+
+    // if typeof array
+    if (isArray(inner)) return tryMultiple(json, inner, $root, findMultiple);
+
+    // if typeof mapper functions
+    if (isMapperFunctions(inner))
+      return handleMapperFunctions([i.toString(), inner], json, $root);
+
+    // if typeof plain object
+    if (typeof inner === 'object')
+      return mapObject(json, inner as MappingTemplate<S>, $root);
+  });
+  return results;
 };
 
 const mapJson: MapJson = (json, template) => {

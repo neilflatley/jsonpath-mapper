@@ -5,6 +5,7 @@ import { store, nullSearchPayload, queryParamsToCourseApi, getQuery } from './sa
 import * as m from './mappers';
 import * as a from './acceptance';
 import { siteConfigEntry } from './sample-data.mjs';
+import { mapArrayObject } from './sample-data.mjs';
 const { expect } = chai;
 
 const { default: mapJson } = mapperPkg;
@@ -110,6 +111,11 @@ describe('JSONPath tests', () => {
 describe('Multiple paths with $path and $return hooks', () => {
   doTest(store, 'All prices for products in store', 'allPrices');
   doTest(nullSearchPayload, 'Dealing with a null payload', 'nullSearchPayload');
+  doTest(
+    mapArrayObject,
+    'Mapping an object that is an array',
+    'mapArrayObject'
+  );
   doTest(
     queryParamsToCourseApi,
     'Converting query params to an api request',

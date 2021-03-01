@@ -1,4 +1,5 @@
 import MappingTemplate, {
+  MapperFunctions,
   MappingElement,
   PureJsFunction,
   ResultFormatter,
@@ -33,9 +34,16 @@ export type MapObject = <S, T>(
 ) => T | Promise<T>;
 
 type ElementKeyValue<S> = [string, MappingElement<S>];
+type MapperFunctionKeyValue<S> = [string, MapperFunctions<S>];
 
 export type MapElement = <S>(
   keyValue: ElementKeyValue<S>,
   json: S,
   $root: S
 ) => ElementKeyValue<S> | Promise<ElementKeyValue<S>>;
+
+export type HandleMapperFunctions = <S>(
+  keyValue: MapperFunctionKeyValue<S>,
+  json: S,
+  $root: S
+) => MappingElement<S> | Promise<MappingElement<S>>;
