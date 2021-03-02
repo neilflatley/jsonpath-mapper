@@ -13,7 +13,7 @@ export const mapArrayObject = {
     locale: 'de-DE',
     shipping_preference: 'SET_PROVIDED_ADDRESS',
   },
-  purchase_units: {
+  purchase_units: [{
     payee: { email_address: undefined, merchant_id: undefined },
     payer: {
       email_address: 'neilflatley@hotmail.com',
@@ -60,7 +60,7 @@ export const mapArrayObject = {
         },
       },
     },
-  },
+  }],
 };
 
 export const disableEmptyParams = {

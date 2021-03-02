@@ -73,7 +73,9 @@ export const tryMultiple = <S>(
   findMultiple: (json: S, arr: MappingElement<S>[], $root: S) => any[]
 ) => {
   const result = findMultiple(json, arr, $root).filter(r => isNumber(r) || r);
-  return result.length > 0 ? result[0] : null;
+  if(arr.every(i => (typeof i === "string")))
+    return result.length > 0 ? result[0] : null;
+  return result;
 };
 
 // const findMultiple = <S>(
