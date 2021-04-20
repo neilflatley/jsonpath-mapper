@@ -39,7 +39,12 @@ We can wire in any property's value with a JsonPath string expression, an array 
 
 JsonPath is a domain specific language which helps us easily locate deeply nested values from within a complex object. It is the spiritual successor to XPath, which is used with a template engine, to transform an XML document into another representation of the same data. We are using the same approach here except with a JavaScript object, using a template engine to build the representation of our new object and JsonPath expressions to locate and pass the data through from our source object.
 
-It is recommended to read the example JsonPath expressions to understand how to use JsonPath: https://github.com/dchester/jsonpath#readme or for the lightweight implementation some features are unavailable so a reduced list of examples are here: https://github.com/nico2che/jsonpath#readme
+It is recommended to read the example JsonPath expressions to understand how to use JsonPath:
+#### v1.0:
+Check the examples at https://github.com/dchester/jsonpath#readme or for the lightweight implementation some features are unavailable so a reduced list of examples are here: https://github.com/nico2che/jsonpath#readme. 
+
+#### New in v1.1: 
+v1.1 attempts to reinstate the full JsonPath feature set by changing the underlying package that does the real heavy lifting, querying our input object for our JsonPath expressions, to a more modern package which supports ESM bundling, and has less dependencies itself. v1.0 used a lighter-weight implementation of JsonPath which did reduce bundle sizes in exchange for removing support for JsonPath's more advanced syntax. https://jsonpath-plus.github.io/JSONPath/docs/ts/
 
 We can use the elementary `jpath` method outside of our mapping template to find a single value based on a given JsonPath expression from any object anywhere in code, although for complex object mappings the calls to resolve JsonPath expressions are handled natively within the context of a mapping template.
 

@@ -1,24 +1,66 @@
-import {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  allBookTitlesByAuthorName,
-  allBookTitlesByPriceLessThan,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  booksByVariousAuthorWithPriceLessThan,
-  booksByVariousAuthor,
-} from './jsonpath.acceptance';
+export * as jsonPathTests from './jsonpath.acceptance';
 
 export const allPrices = {
   booksData: [17.96, 10, 20, 15.67],
   books: 63.63,
   bicycles: 19.95,
   software: 0,
+};
+
+export const mapArrayObject = {
+  application_context: {
+    brand_name: 'revitive.com',
+    locale: 'de-DE',
+    shipping_preference: 'SET_PROVIDED_ADDRESS',
+  },
+  purchase_units: [{
+    payee: { email_address: undefined, merchant_id: undefined },
+    payer: {
+      email_address: 'neilflatley@hotmail.com',
+      name: {
+        given_name: 'Neil',
+        surname: 'Flatley',
+      },
+      address: {
+        address_line_1: 'Talstr. 123',
+        address_line_2: '',
+        admin_area_2: 'Waldfeucht',
+        admin_area_1: 'Nordrhein-Westfalen',
+        postal_code: '52525',
+        country_code: 'DE',
+      },
+    },
+    shipping: {
+      name: {
+        full_name: 'Neil Flatley',
+      },
+      address: {
+        address_line_1: 'Talstr. 123',
+        address_line_2: '',
+        admin_area_2: 'Waldfeucht',
+        admin_area_1: 'Nordrhein-Westfalen',
+        postal_code: '52525',
+        country_code: 'DE',
+      },
+    },
+    amount: {
+      value: 458.24,
+      breakdown: {
+        item_total: {
+          value: 418.48,
+          currency_code: 'EUR',
+        },
+        shipping: {
+          value: 0,
+          currency_code: 'EUR',
+        },
+        tax_total: {
+          value: 39.76,
+          currency_code: 'EUR',
+        },
+      },
+    },
+  }],
 };
 
 export const disableEmptyParams = {
@@ -324,20 +366,4 @@ export const siteConfigState = {
       offers: [],
     },
   ],
-};
-
-export const jsonPathTests = {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  allBookTitlesByAuthorName,
-  allBookTitlesByPriceLessThan,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  booksByVariousAuthorWithPriceLessThan,
-  booksByVariousAuthor,
 };

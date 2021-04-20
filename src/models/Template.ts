@@ -3,7 +3,8 @@ export type Path = string | string[];
 export type MappingElement<S> =
   | Path
   | ResultFormatter<S>
-  | { [key: string]: MappingElement<S> };
+  | { [key: string]: MappingElement<S> }
+  | MappingElement<S>[];
 
 // type WireFunctionArg<S, K extends keyof S> = S[K];
 

@@ -1,18 +1,4 @@
-import {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  // allBookTitlesByAuthorName,
-  // allBookTitlesByPriceLessThan,
-  // booksByVariousAuthorWithPriceLessThan,
-  // booksByVariousAuthor,
-} from './jsonpath.mappers';
+export * as jsonPathTests from './jsonpath.mappers';
 
 export const allPrices = {
   booksData: 'books[*].price',
@@ -47,6 +33,77 @@ export const disableEmptyParams = {
     $path: `selectedFilters.start-date`,
     $disable: f => !f,
   },
+};
+
+export const mapArrayObject = {
+  application_context: {
+    brand_name: () => 'revitive.com',
+    locale: ({ currentLang }) => {
+      return `${currentLang
+        .substring(0, 3)
+        .toLowerCase()}${currentLang.substring(3, 5).toUpperCase()}`;
+    },
+    shipping_preference: () => 'SET_PROVIDED_ADDRESS',
+  },
+  purchase_units: [
+    {
+      payee: { email_address: '', merchant_id: '' },
+      payer: {
+        email_address: 'customerDetails.email',
+        name: {
+          given_name: 'customerDetails.first_name',
+          surname: 'customerDetails.last_name',
+        },
+        address: {
+          address_line_1: 'billingAddress.line1',
+          address_line_2: 'billingAddress.line2',
+          admin_area_2: 'billingAddress.city',
+          admin_area_1: 'billingAddress.state',
+          postal_code: 'billingAddress.postal_code',
+          country_code: 'billingAddress.country_iso_2',
+        },
+      },
+      shipping: {
+        name: {
+          full_name: ({ customerDetails: { first_name, last_name } }) =>
+            `${first_name} ${last_name}`,
+        },
+        address: {
+          address_line_1: 'shippingAddress.line1',
+          address_line_2: 'shippingAddress.line2',
+          admin_area_2: 'shippingAddress.city',
+          admin_area_1: 'shippingAddress.state',
+          postal_code: 'shippingAddress.postal_code',
+          country_code: 'shippingAddress.country_iso_2',
+        },
+      },
+      amount: {
+        value: 'orderAmount',
+        breakdown: {
+          item_total: {
+            value: 'subTotal',
+            currency_code: 'dictionary.currency',
+          },
+          shipping: {
+            value: 'shipping',
+            currency_code: 'dictionary.currency',
+          },
+          tax_total: {
+            value: 'taxAmount',
+            currency_code: 'dictionary.currency',
+          },
+          discount: {
+            $path: 'discountValue',
+            $formatting: {
+              value: '.',
+              currency_code: 'dictionary.currency',
+            },
+            $disable: ret => !ret,
+          },
+        },
+      },
+    },
+  ],
 };
 
 export const nullSearchPayload = {
@@ -202,20 +259,4 @@ export const siteConfigState = {
       },
     },
   },
-};
-
-export const jsonPathTests = {
-  allBooksAuthors,
-  allBooksAuthorNames,
-  allNamesInBooks,
-  allAuthorNames,
-  firstBookTitle,
-  lastBookTitle,
-  firstTwoBookTitles,
-  lastTwoBookTitles,
-  twoBookTitlesFromSecondPosition,
-  // allBookTitlesByAuthorName,
-  // allBookTitlesByPriceLessThan,
-  // booksByVariousAuthorWithPriceLessThan,
-  // booksByVariousAuthor,
 };

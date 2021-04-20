@@ -1,4 +1,5 @@
-import jsonpath from 'simple-jsonpath';
+import { JSONPath } from 'jsonpath-plus';
+// import jsonpath from 'simple-jsonpath';
 import {
   DefaultFunction,
   DisableFunction,
@@ -11,10 +12,14 @@ import {
 export { default as fromEntries } from 'fromentries';
 
 export const jpath = <S, T>(query: string, json: S): T | T[] => {
-  const result = jsonpath.query(
-    json,
-    `$${query.startsWith('.') ? '' : '.'}${query}`
-  );
+  const result = JSONPath({
+    path: `$${query.startsWith('.') ? '' : '.'}${query}`,
+    json: json as any,
+  });
+  // const result = jsonpath.query(
+  //   json,
+  //   `$${query.startsWith('.') ? '' : '.'}${query}`
+  // );
   if (
     result.length > 1 ||
     (query.match(/\[.*?\]/) && !query.match(/\[[0-9]\]/))
@@ -61,23 +66,35 @@ export const isString = <S>(val: MappingElement<S>): val is string =>
 export const isStringArray = <S>(val: MappingElement<S>): val is string[] =>
   Array.isArray(val) && val.every(it => typeof it === 'string');
 
-export const tryMultiple = <S>(json: S, arr: MappingElement<S>[], $root: S) => {
-  const result = findMultiple(json, arr, $root).filter(r => isNumber(r) || r);
-  return result.length > 0 ? result[0] : null;
-};
-
-const findMultiple = <S>(
+export const tryMultiple = <S>(
   json: S,
   arr: MappingElement<S>[],
-  $root: S
-): any[] => {
-  const results = arr.map(inner => {
-    // evaluate any value supplied as string
-    if (isString(inner)) {
-      return jpath(inner, json);
-    }
-    // if typeof func
-    if (isWireFunction(inner)) return inner(json, $root);
-  });
-  return results;
+  $root: S,
+  findMultiple: (json: S, arr: MappingElement<S>[], $root: S) => any[]
+) => {
+  const result = findMultiple(json, arr, $root).filter(r => isNumber(r) || r);
+  if(arr.every(i => (typeof i === "string")))
+    return result.length > 0 ? result[0] : null;
+  return result;
 };
+
+// const findMultiple = <S>(
+//   json: S,
+//   arr: MappingElement<S>[],
+//   $root: S
+// ): any[] => {
+//   const results = arr.map(inner => {
+//     // evaluate any value supplied as string
+//     if (isString(inner)) {
+//       return jpath(inner, json);
+//     }
+//     // if typeof func
+//     if (isWireFunction(inner)) return inner(json, $root);
+
+//     if (isMapperFunctions(inner)) {
+//       return handleMappingFunctions([, inner], json, $root);
+//     }
+//     if (typeof inner === 'object') return mapObject(json, inner, $root);
+//   });
+//   return results;
+// };
