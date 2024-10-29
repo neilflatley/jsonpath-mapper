@@ -46,6 +46,9 @@ Check the examples at https://github.com/dchester/jsonpath#readme or for the lig
 #### New in v1.1: 
 v1.1 attempts to reinstate the full JsonPath feature set by changing the underlying package that does the real heavy lifting, querying our input object for our JsonPath expressions, to a more modern package which supports ESM bundling, and has less dependencies itself. v1.0 used a lighter-weight implementation of JsonPath which did reduce bundle sizes in exchange for removing support for JsonPath's more advanced syntax. https://jsonpath-plus.github.io/JSONPath/docs/ts/
 
+#### v2.0: 
+Has the same features as v1.1+ with a major dependency bump to jsonpath-plus v10 resolving security vulnerabilities
+
 We can use the elementary `jpath` method outside of our mapping template to find a single value based on a given JsonPath expression from any object anywhere in code, although for complex object mappings the calls to resolve JsonPath expressions are handled natively within the context of a mapping template.
 
 Consider the following example of a book store who also sells software and also has a bicycle for sale:

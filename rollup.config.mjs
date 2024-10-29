@@ -1,7 +1,8 @@
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 
-import pkg from './package.json' with { type: 'json' };
+// import pkg from './package.json' assert { type: 'json' }; // Node.js 16 uses `assert`
+import pkg from './package.json' with { type: 'json' }; // Node.js 20 uses `with`
 
 export default {
   input: 'dist/index.js',
