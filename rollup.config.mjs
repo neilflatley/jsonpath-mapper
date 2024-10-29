@@ -1,15 +1,16 @@
-import babel from "rollup-plugin-babel";
-import resolve from "rollup-plugin-node-resolve";
+import babel from 'rollup-plugin-babel';
+import resolve from 'rollup-plugin-node-resolve';
 
-import pkg from './package.json'
+import pkg from './package.json' assert { type: 'json' };
 
 export default {
   input: 'dist/index.js',
+  context: 'this',
   output: [
     {
       file: 'dist/cjs/index.js',
       format: 'cjs',
-      exports: 'named',
+      // exports: 'named',
     },
     // {
     //   file: 'dist/esm/index.js',
@@ -27,6 +28,10 @@ export default {
     babel({
       exclude: 'node_modules/**',
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      presets: [
+        ['@babel/preset-env', { targets: { esmodules: true } }],
+        ['@babel/preset-typescript'],
+      ],
     }),
   ],
 };
