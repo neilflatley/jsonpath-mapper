@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { expect } from 'chai';
 import pkg from 'jsonpath-mapper';
 // import mapJson, { mapJsonAsync } from 'jsonpath-mapper';
@@ -19,6 +18,7 @@ console.log('mapJsonAsync: ', mapJsonAsync);
 
 let count = 0;
 
+/* eslint-disable no-unused-vars */
 const logData = (data) => console.log('\ntest data: \n', data);
 const logTemplate = (template) => console.log('template: \n', template);
 const logResult = (result) => console.log('\nresult: \n', result, '\n');
@@ -34,6 +34,7 @@ const doTest = (data, testName, mapper, key) => {
   let result = {};
   let asyncResult = {};
   let testNum = 0;
+  // eslint-disable-next-line mocha/no-top-level-hooks
   before(async () => {
     testNum = count += 1;
     result = mapJson(data, m[mapper]);
