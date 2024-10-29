@@ -25,8 +25,8 @@ const formatResult: FormatResult = (value, $formatting, $root) =>
   isWireFunction($formatting)
     ? $formatting(value, $root)
     : isObject($formatting)
-    ? mapObject(value, $formatting, $root)
-    : value;
+      ? mapObject(value, $formatting, $root)
+      : value;
 
 const handleMapperFunctions: HandleMapperFunctions = async (
   [k, v],
@@ -81,7 +81,7 @@ const handleMapperFunctions: HandleMapperFunctions = async (
 };
 
 const mapElement: MapElement = async ([k, v], json, $root) => {
-  if (isNullOrUndefined(v) || v === '') return [k, undefined];
+  if (isNullOrUndefined(v) || v === '') return [k, undefined as any];
 
   // evaluate a given string as a jsonpath expression
   if (isString(v)) {
