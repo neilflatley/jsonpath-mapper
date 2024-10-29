@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { expect } from 'chai';
-import mapperPkg from '../dist/index.js';
+import pkg from 'jsonpath-mapper';
+// import mapJson, { mapJsonAsync } from 'jsonpath-mapper';
 import {
   store,
   nullSearchPayload,
@@ -12,7 +13,7 @@ import * as a from './acceptance/index.mjs';
 import { siteConfigEntry } from './sample-data.mjs';
 import { mapArrayObject } from './sample-data.mjs';
 
-const { default: mapJson, mapJsonAsync } = mapperPkg;
+const { default: mapJson, mapJsonAsync } = pkg;
 console.log('mapJson: ', mapJson);
 console.log('mapJsonAsync: ', mapJsonAsync);
 

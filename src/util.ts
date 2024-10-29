@@ -7,7 +7,7 @@ import {
   MappingElement,
   Path,
   WireFunction,
-} from './models/Template';
+} from './models/Template.js';
 
 export { default as fromEntries } from 'fromentries';
 

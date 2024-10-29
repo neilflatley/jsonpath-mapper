@@ -9,9 +9,9 @@ import {
   isUndefined,
   isWireFunction,
   jpath,
-} from './util';
+} from './util.js';
 
-import MappingTemplate, { MappingElement } from './models/Template';
+import MappingTemplate, { MappingElement } from './models/Template.js';
 import {
   FormatResult,
   HandleMapperFunctions,
@@ -19,7 +19,7 @@ import {
   MapElement,
   MapJsonAsync,
   MapObject,
-} from './models/MapperFunctions';
+} from './models/MapperFunctions.js';
 
 const formatResult: FormatResult = (value, $formatting, $root) =>
   isWireFunction($formatting)
