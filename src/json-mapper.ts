@@ -9,9 +9,9 @@ import {
   jpath,
   tryMultiple,
   isObject,
-} from './util';
+} from './util.js';
 
-import MappingTemplate, { MappingElement } from './models/Template';
+import MappingTemplate, { MappingElement } from './models/Template.js';
 import {
   FormatResult,
   HandleMapperFunctions,
@@ -19,7 +19,7 @@ import {
   MapElement,
   MapJson,
   MapObject,
-} from './models/MapperFunctions';
+} from './models/MapperFunctions.js';
 
 const formatResult: FormatResult = (value, $formatting, $root) =>
   isWireFunction($formatting)
@@ -43,7 +43,7 @@ const handleMapperFunctions: HandleMapperFunctions = ([k, v], json, $root) => {
   if (!isUndefined(v.$formatting) && !isNullOrUndefined(val)) {
     if (isArray(val)) {
       formatted = val.map(
-        inner =>
+        (inner) =>
           !isUndefined(v.$formatting) &&
           formatResult(inner, v.$formatting, $root)
       );
@@ -71,7 +71,7 @@ const handleMapperFunctions: HandleMapperFunctions = ([k, v], json, $root) => {
 };
 
 const mapElement: MapElement = ([k, v], json, $root) => {
-  if (isNullOrUndefined(v) || v === '') return [k, undefined];
+  if (isNullOrUndefined(v) || v === '') return [k, undefined as any];
 
   // evaluate a given string as a jsonpath expression
   if (isString(v)) {
@@ -109,7 +109,7 @@ const mapObject: MapObject = (json, obj, $root) => {
   // supplied object template that follows a few simple principles
   const objectAsEntries = Object.entries(obj)
     .map(([k, v]) => mapElement([k, v], json, $root))
-    .filter(obj => isArray(obj) && obj[1] !== null);
+    .filter((obj) => isArray(obj) && obj[1] !== null);
   return fromEntries(objectAsEntries);
 };
 
@@ -118,7 +118,7 @@ const mapArray: MapArrayFunction = <S, T>(
   arr: MappingTemplate<S>[],
   $root: S
 ) => {
-  return (arr.map(v => mapObject(json, v, $root)) as unknown) as T;
+  return (arr.map((v) => mapObject(json, v, $root)) as unknown) as T;
 };
 
 const findMultiple = <S>(

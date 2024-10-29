@@ -1,4 +1,4 @@
-export * as jsonPathTests from './jsonpath.mappers';
+export * as jsonPathTests from './jsonpath.mappers.mjs';
 
 export const allPrices = {
   booksData: 'books[*].price',

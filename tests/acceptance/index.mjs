@@ -1,4 +1,4 @@
-export * as jsonPathTests from './jsonpath.acceptance';
+export * as jsonPathTests from './jsonpath.acceptance.mjs';
 
 export const allPrices = {
   booksData: [17.96, 10, 20, 15.67],

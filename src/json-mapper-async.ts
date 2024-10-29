@@ -3,15 +3,15 @@ import {
   isArray,
   isMapperFunctions,
   isNullOrUndefined,
+  isNumber,
   isObject,
   isString,
   isUndefined,
   isWireFunction,
   jpath,
-  tryMultiple,
-} from './util';
+} from './util.js';
 
-import MappingTemplate, { MappingElement } from './models/Template';
+import MappingTemplate, { MappingElement } from './models/Template.js';
 import {
   FormatResult,
   HandleMapperFunctions,
@@ -19,14 +19,14 @@ import {
   MapElement,
   MapJsonAsync,
   MapObject,
-} from './models/MapperFunctions';
+} from './models/MapperFunctions.js';
 
 const formatResult: FormatResult = (value, $formatting, $root) =>
   isWireFunction($formatting)
     ? $formatting(value, $root)
     : isObject($formatting)
-    ? mapObject(value, $formatting, $root)
-    : value;
+      ? mapObject(value, $formatting, $root)
+      : value;
 
 const handleMapperFunctions: HandleMapperFunctions = async (
   [k, v],
@@ -42,7 +42,7 @@ const handleMapperFunctions: HandleMapperFunctions = async (
     val = jpath(v.$path, json);
   }
   if (isArray(v.$path)) {
-    val = tryMultiple(json, v.$path, $root, findMultiple);
+    val = await tryMultiple(json, v.$path, $root, findMultiple);
   }
   if (!isUndefined(v.$formatting) && !isNullOrUndefined(val)) {
     if (isArray(val)) {
@@ -81,7 +81,7 @@ const handleMapperFunctions: HandleMapperFunctions = async (
 };
 
 const mapElement: MapElement = async ([k, v], json, $root) => {
-  if (isNullOrUndefined(v) || v === '') return [k, undefined];
+  if (isNullOrUndefined(v) || v === '') return [k, undefined as any];
 
   // evaluate a given string as a jsonpath expression
   if (isString(v)) {
@@ -96,7 +96,7 @@ const mapElement: MapElement = async ([k, v], json, $root) => {
   // evaluate all the array strings as jsonpath
   // and then return the first match
   if (isArray(v)) {
-    return [k, await Promise.all(tryMultiple(json, v, $root, findMultiple))];
+    return [k, await tryMultiple(json, v, $root, findMultiple)];
   }
 
   // if typeof Object, this could be a template object
@@ -152,7 +152,7 @@ const findMultiple = <S>(
 
     // if typeof array
     if (isArray(inner))
-      return await Promise.all(tryMultiple(json, inner, $root, findMultiple));
+      return await tryMultiple(json, inner, $root, findMultiple);
 
     // if typeof mapper functions
     if (isMapperFunctions(inner))
@@ -163,6 +163,19 @@ const findMultiple = <S>(
       return await mapObject(json, inner as MappingTemplate<S>, $root);
   });
   return results;
+};
+
+const tryMultiple = async <S>(
+  json: S,
+  arr: MappingElement<S>[],
+  $root: S,
+  findMultiple: (json: S, arr: MappingElement<S>[], $root: S) => any[]
+) => {
+  const result = (await Promise.all(findMultiple(json, arr, $root)))
+    .filter(r => isNumber(r) || r);
+  if (arr.every((i) => typeof i === 'string'))
+    return result.length > 0 ? result[0] : null;
+  return result;
 };
 
 const mapJson: MapJsonAsync = async (json, template) => {

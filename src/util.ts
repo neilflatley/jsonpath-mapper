@@ -7,7 +7,7 @@ import {
   MappingElement,
   Path,
   WireFunction,
-} from './models/Template';
+} from './models/Template.js';
 
 export { default as fromEntries } from 'fromentries';
 
@@ -45,7 +45,7 @@ export const isNull = (val: any): val is null => val === null;
 export const isUndefined = (val: any): val is undefined =>
   typeof val === 'undefined';
 
-export const isNullOrUndefined = (val: any) => {
+export const isNullOrUndefined = (val: any): val is null | undefined => {
   if (isUndefined(val)) return true;
   if (isNull(val)) return true;
   return false;
@@ -64,7 +64,7 @@ export const isString = <S>(val: MappingElement<S>): val is string =>
   typeof val === 'string';
 
 export const isStringArray = <S>(val: MappingElement<S>): val is string[] =>
-  Array.isArray(val) && val.every(it => typeof it === 'string');
+  Array.isArray(val) && val.every((it) => typeof it === 'string');
 
 export const tryMultiple = <S>(
   json: S,
@@ -73,7 +73,7 @@ export const tryMultiple = <S>(
   findMultiple: (json: S, arr: MappingElement<S>[], $root: S) => any[]
 ) => {
   const result = findMultiple(json, arr, $root).filter(r => isNumber(r) || r);
-  if(arr.every(i => (typeof i === "string")))
+  if (arr.every(i => (typeof i === "string")))
     return result.length > 0 ? result[0] : null;
   return result;
 };

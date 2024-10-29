@@ -1,21 +1,27 @@
 /* eslint-disable no-console */
-import chai from 'chai';
-import mapperPkg from '../dist/index';
-import { store, nullSearchPayload, queryParamsToCourseApi, getQuery } from './sample-data';
-import * as m from './mappers';
-import * as a from './acceptance';
+import { expect } from 'chai';
+import pkg from 'jsonpath-mapper';
+// import mapJson, { mapJsonAsync } from 'jsonpath-mapper';
+import {
+  store,
+  nullSearchPayload,
+  queryParamsToCourseApi,
+  getQuery,
+} from './sample-data.mjs';
+import * as m from './mappers/index.mjs';
+import * as a from './acceptance/index.mjs';
 import { siteConfigEntry } from './sample-data.mjs';
 import { mapArrayObject } from './sample-data.mjs';
-const { expect } = chai;
 
-const { default: mapJson } = mapperPkg;
-console.log('mapJson: ', mapJson)
+const { default: mapJson, mapJsonAsync } = pkg;
+console.log('mapJson: ', mapJson);
+console.log('mapJsonAsync: ', mapJsonAsync);
 
 let count = 0;
 
-const logData = data => console.log('\ntest data: \n', data);
-const logTemplate = template => console.log('template: \n', template);
-const logResult = result => console.log('\nresult: \n', result, '\n');
+const logData = (data) => console.log('\ntest data: \n', data);
+const logTemplate = (template) => console.log('template: \n', template);
+const logResult = (result) => console.log('\nresult: \n', result, '\n');
 const logTest = (testName, testNum) =>
   console.log(
     '\n===============================\n\n',
@@ -26,13 +32,20 @@ const logTest = (testName, testNum) =>
 
 const doTest = (data, testName, mapper, key) => {
   let result = {};
+  let asyncResult = {};
   let testNum = 0;
-  before(() => {
+  before(async () => {
     testNum = count += 1;
     result = mapJson(data, m[mapper]);
+    asyncResult = await mapJsonAsync(data, m[mapper]);
   });
   it(testName, () => {
     expect(key ? result[key] : result).to.deep.equal(
+      key ? a[mapper][key] : a[mapper]
+    );
+  });
+  it(`${testName} (async)`, () => {
+    expect(key ? asyncResult[key] : asyncResult).to.deep.equal(
       key ? a[mapper][key] : a[mapper]
     );
   });

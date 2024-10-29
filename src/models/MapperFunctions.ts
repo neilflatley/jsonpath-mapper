@@ -3,7 +3,7 @@ import MappingTemplate, {
   MappingElement,
   PureJsFunction,
   ResultFormatter,
-} from './Template';
+} from './Template.js';
 
 export type MapJson = <S, T>(
   json: S,
