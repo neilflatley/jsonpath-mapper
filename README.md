@@ -153,13 +153,13 @@ console.log(testObject);
 
 ### Wire functions
 
-Instead of using just Jsonpath to find our value, we can open a function on any property we define to 'wire' in our value using raw JavaScript.
+Instead of using `jsonpath` to find our value, we can open a function on any property we define to 'wire' in our value using raw JavaScript.
 
-This is useful for calling other raw JavaScript functions to enrich or transform our data, or a simple function that takes no arguments and returns a hard-coded value.
+This is useful for calling other JavaScript functions to enrich or transform our data, or a simple function that takes no arguments and returns a hard-coded value.
 
-| Argument | Type   | Description                             |
-| -------- | ------ | --------------------------------------- |
-| root     | object | The original object we are transforming |
+| Argument     | Type   | Description                                                                                            |
+| ------------ | ------ | ------------------------------------------------------------------------------------------------------ |
+| root / value | object | The original object we are transforming / the scoped value for deeply nested objects or inner mappings |
 
 ```
 const bookMapping = {
