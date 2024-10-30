@@ -1,6 +1,6 @@
 {
   "name": "jsonpath-mapper",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A json to json transformation utility with a few nice features to use when translating for example API responses into a domain object for use in your domain-driven JavaScript applications. Can be used in React applications with the 'useMapper' hook.",
   "main": "dist/jsonpath-mapper.cjs.js",
   "module": "dist/jsonpath-mapper.js",
