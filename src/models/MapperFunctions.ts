@@ -1,4 +1,5 @@
-import MappingTemplate, {
+import {
+  MappingTemplate,
   MapperFunctions,
   MappingElement,
   PureJsFunction,

@@ -30,8 +30,6 @@ export interface MapperFunctions<S> {
   $disable?: DisableFunction<S>;
 }
 
-interface MappingTemplate<S> {
+export interface MappingTemplate<S> {
   [key: string]: MappingElement<S>;
 }
-
-export default MappingTemplate;

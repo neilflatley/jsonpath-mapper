@@ -11,7 +11,7 @@ import {
   isObject,
 } from './util.js';
 
-import MappingTemplate, { MappingElement } from './models/Template.js';
+import { MappingTemplate, MappingElement } from './models/Template.js';
 import {
   FormatResult,
   HandleMapperFunctions,
@@ -25,8 +25,8 @@ const formatResult: FormatResult = (value, $formatting, $root) =>
   isWireFunction($formatting)
     ? $formatting(value, $root)
     : isObject($formatting)
-    ? mapObject(value, $formatting, $root)
-    : value;
+      ? mapObject(value, $formatting, $root)
+      : value;
 
 const handleMapperFunctions: HandleMapperFunctions = ([k, v], json, $root) => {
   // store results from various stages of the evaluations

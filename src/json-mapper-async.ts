@@ -11,7 +11,7 @@ import {
   jpath,
 } from './util.js';
 
-import MappingTemplate, { MappingElement } from './models/Template.js';
+import { MappingTemplate, MappingElement } from './models/Template.js';
 import {
   FormatResult,
   HandleMapperFunctions,
